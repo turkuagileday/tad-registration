@@ -21,7 +21,7 @@ class EBillingType(BillingType):
 
 class Registration(models.Model):
     """
-    Reprecent single registration.
+    Represent single registration.
     Every registration has contact_person, information about billing and all info about participants. Note that one registration can have more than one participant
     """
     BILLING_TYPE_CHOICES = (
