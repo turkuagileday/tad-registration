@@ -36,6 +36,7 @@ class Registration(models.Model):
 class Participant(models.Model):
     PARTICIPATION_CHOICES = (
         ('both_days', 'Both days'),
+        ('both_days_member', 'Both days (member)'),
         ('conference_day', 'Conference day'),
         ('conference_day_member', 'Conference day (member)'),
         ('student', 'Student')
