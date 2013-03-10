@@ -31,7 +31,7 @@ class Registration(models.Model):
     )
     name = models.CharField(max_length=255)
     organisation = models.CharField(max_length=255)
-    billing_type = models.CharField(max_length=1, choices=BILLING_TYPE_CHOICES)
+    billing_type = models.CharField(max_length=255, choices=BILLING_TYPE_CHOICES)
 
 class Participant(models.Model):
     PARTICIPATION_CHOICES = (
@@ -50,10 +50,10 @@ class Participant(models.Model):
     )
 
     name = models.CharField(max_length=255)
-    participation_choice = models.CharField(max_length=1, choices=PARTICIPATION_CHOICES)
-    conference_dinner = models.CharField(max_length=1, choices=(('dinner', 'Dinner'),))
+    participation_choice = models.CharField(max_length=255, choices=PARTICIPATION_CHOICES)
+    conference_dinner = models.BooleanField()
     special_diet = models.CharField(max_length=255, blank=True)
-    t_shirt_size = models.CharField(max_length=1, choices=T_SHIRT_SIZE)
+    t_shirt_size = models.CharField(max_length=255, choices=T_SHIRT_SIZE)
     twitter_account = models.CharField(max_length=255, blank=True)
 # TODO: WORKSHOPS!
     other_info = models.TextField(blank=True)
