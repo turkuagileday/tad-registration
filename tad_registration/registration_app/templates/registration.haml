@@ -3,15 +3,21 @@
   %meta(http-equiv="Content-type" content="text/html; charset='utf-8'")
   %title Turku Agile Day 2013 registratin
   %script(src="/static/js/jquery.js")
+  %script(src="/static/js/underscore.js")
+  %script(src="/static/js/main.js")
+  %link(rel="stylesheet" type="text/css" media="screen" href="/static/css/site.css")
 
 %body
   %h1 Turku Agile Day registration
 
-  %form(action="register" method="post")
+  %form#registration-form(action="register" method="post")
     {% csrf_token %}
     .registration
       {{ reg_form.as_p }}
-    .participant
-      {{ part_form.as_p }}
+    .participants
+      .participant
+        {{ part_form.as_p }}
+
+    .add-participant
     %input(type="submit" value="Register")
 

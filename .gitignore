@@ -1,6 +1,7 @@
 *.log
 *.pot
 *.pyc
+.sass-cache
 local_settings.py
 
 database.db
