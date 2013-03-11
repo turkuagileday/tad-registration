@@ -11,15 +11,14 @@ def registration(request):
         'part_forms': (participant_form, )
       })
 
-# TODO: REQUIRED FIELDS! INFO USER
 def register(request):
-    def populate_participant(index, reg_model, request):
+    def populate_participant(index, reg_model, data):
         index_suffix = "-{i}".format(i=index)
-        form_keys = [key for key in request.POST if key.endswith(index_suffix)]
+        form_keys = [key for key in data if key.endswith(index_suffix)]
         model = Participant()
         for key in form_keys:
             real_key = key.split('-')[0]
-            setattr(model, real_key, request.POST[key])
+            setattr(model, real_key, data[key])
 
         if reg_model:
             model.registration = reg_model
@@ -48,7 +47,14 @@ def register(request):
         if valid_registration:
             reg_model = registration_form.save()
 
-        participants = [populate_participant(i, reg_model, request) for i in range(0, participant_count)]
+
+        allowed_keys = {}
+        for key in request.POST:
+            for participant_key in Participant._meta.get_all_field_names():
+                if participant_key != 'id' and key.startswith(participant_key):
+                  allowed_keys.update({key: request.POST[key]})
+
+        participants = [populate_participant(i, reg_model, allowed_keys) for i in range(0, participant_count)]
         valid_participants = validate_participants(participants)
 
         if valid_participants and valid_registration:
@@ -64,8 +70,8 @@ def register(request):
                 form = ParticipantForm(instance=model)
                 if hasattr(model, "errors"):
                     form.errors.update(model.errors)
-
                 participant_forms.append(form)
+
             return render(request, 'registration.html', {
                 'reg_form': registration_form,
                 'part_forms': participant_forms
