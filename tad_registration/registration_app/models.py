@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm
 
 class BillingType(models.Model):
     y_id = models.CharField(max_length=255, blank=True) # y_id, ugh :(
@@ -62,3 +63,12 @@ class Participant(models.Model):
     registration = models.ForeignKey(Registration)
 
 
+# FORMS
+class RegistrationForm(ModelForm):
+    class Meta:
+        model = Registration
+
+class ParticipantForm(ModelForm):
+    class Meta:
+        model = Participant
+        exclude = ('registration')

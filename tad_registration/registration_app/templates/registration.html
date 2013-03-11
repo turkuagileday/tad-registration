@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<head>
+  <meta content="text/html; charset='utf-8'" http-equiv='Content-type' />
+  <title>Turku Agile Day 2013 registratin</title>
+  <script src='/static/js/jquery.js'></script>
+</head>
+<body>
+  <h1>Turku Agile Day registration</h1>
+  <form action='register' method='post'>
+    {% csrf_token %}
+    <div class='registration'>
+      {{ reg_form.as_p }}
+    </div>
+    <div class='participant'>
+      {{ part_form.as_p }}
+    </div>
+    <input type='submit' value='Register' />
+  </form>
+</body>
