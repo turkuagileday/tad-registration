@@ -12,6 +12,7 @@
 
   %form#registration-form(action="register" method="post")
     {% csrf_token %}
+    %input#participant-count(type="hidden" name="participant-count" value="0")
     .registration
       {{ reg_form.as_p }}
     .participants

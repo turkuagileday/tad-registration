@@ -1,5 +1,6 @@
 $(function() {
     var addParticipant = function() {
+        // CANT JUST CLONE. WILL COPY VALUES
         $('.participants').append($('.participant:first').clone()); 
     },
         updateParticipantCount = function() {
@@ -28,6 +29,7 @@ $(function() {
 
     $("#registration-form").submit(function(e) {
         appendIndexesToNames();
+        $("#participant-count").attr("value", $(".participant").length)
         return true;
     });
 

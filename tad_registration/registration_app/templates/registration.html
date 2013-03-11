@@ -11,6 +11,7 @@
   <h1>Turku Agile Day registration</h1>
   <form action='register' id='registration-form' method='post'>
     {% csrf_token %}
+    <input id='participant-count' name='participant-count' type='hidden' value='0' />
     <div class='registration'>
       {{ reg_form.as_p }}
     </div>
