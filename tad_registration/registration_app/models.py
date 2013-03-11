@@ -30,7 +30,7 @@ class Registration(models.Model):
         ('post', 'Post'),
         ('ebilling', 'E-billing')
     )
-    name = models.CharField(max_length=255)
+    contact_person = models.CharField(max_length=255)
     organisation = models.CharField(max_length=255)
     billing_type = models.CharField(max_length=255, choices=BILLING_TYPE_CHOICES)
 
