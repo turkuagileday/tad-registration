@@ -8,7 +8,7 @@ def registration(request):
     participant_form = ParticipantForm()
     return render(request, 'registration.html', {
         'reg_form': registration_form,
-        'part_form': participant_form
+        'part_forms': (participant_form, )
       })
 
 # TODO: REQUIRED FIELDS! INFO USER
@@ -21,31 +21,54 @@ def register(request):
             real_key = key.split('-')[0]
             setattr(model, real_key, request.POST[key])
 
-        model.registration = reg_model
+        if reg_model:
+            model.registration = reg_model
+
         model.conference_dinner = model.conference_dinner == "on"
-        model.full_clean()
 
         return model
-        
+
+    def validate_participants(participants):
+        valid_participants = True
+        for p in participants:
+            try:
+                p.full_clean()
+            except ValidationError as e:
+                valid_participants = False
+                p.errors = e.message_dict
+        return valid_participants
+
     if request.method == "POST":
         registration_form = RegistrationForm(request.POST)
         participant_count = int(request.POST['participant-count'])
 
-        if registration_form.is_valid():
-            # Regmodel will be removed if validation error from validating participants is encountered
+        # Regmodel will be removed if validation error from validating participants is encountered
+        valid_registration = registration_form.is_valid()
+        reg_model = None
+        if valid_registration:
             reg_model = registration_form.save()
 
-            try:
-                participants = [populate_participant(i, reg_model, request) for i in range(0, participant_count)]
-                for p in participants:
-                    p.save()
+        participants = [populate_participant(i, reg_model, request) for i in range(0, participant_count)]
+        valid_participants = validate_participants(participants)
 
-                return HttpResponse("success")
-            except ValidationError:
-                reg_model.delete()
-                return HttpResponse("Not valid participants")
-
+        if valid_participants and valid_registration:
+            for p in participants:
+                p.save()
+            return HttpResponse("success")
         else:
-            return HttpResponse("Not valid registration")
+            if reg_model:
+                reg_model.delete()
+
+            participant_forms = []
+            for model in participants:
+                form = ParticipantForm(instance=model)
+                if hasattr(model, "errors"):
+                    form.errors.update(model.errors)
+
+                participant_forms.append(form)
+            return render(request, 'registration.html', {
+                'reg_form': registration_form,
+                'part_forms': participant_forms
+            })
     else:
         return HttpResponseRedirect('/')

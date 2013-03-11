@@ -16,8 +16,10 @@
     .registration
       {{ reg_form.as_p }}
     .participants
+      {% for part_form in part_forms %}
       .participant
         {{ part_form.as_p }}
+      {% endfor %}
 
     .add-participant
     %input(type="submit" value="Register")

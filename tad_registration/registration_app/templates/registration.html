@@ -16,9 +16,11 @@
       {{ reg_form.as_p }}
     </div>
     <div class='participants'>
+      {% for part_form in part_forms %}
       <div class='participant'>
         {{ part_form.as_p }}
       </div>
+      {% endfor %}
     </div>
     <div class='add-participant'></div>
     <input type='submit' value='Register' />
