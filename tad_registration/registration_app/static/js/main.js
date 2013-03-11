@@ -1,7 +1,9 @@
 $(function() {
     var addParticipant = function() {
-        // CANT JUST CLONE. WILL COPY VALUES
-        $('.participants').append($('.participant:first').clone()); 
+        participant = $('.participant:first').clone();
+        participant.find("input[type=text]").val("");
+        participant.find("input[type=checkbox]").attr("checked", false);
+        $('.participants').append(participant);
     },
         updateParticipantCount = function() {
             participants = $('.participant');
