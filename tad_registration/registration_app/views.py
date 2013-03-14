@@ -91,7 +91,14 @@ def register(request):
         }
 
         try:
-            return populate_funcs[reg_model.billing_type](reg_model, data)
+            model = populate_funcs[reg_model.billing_type](reg_model, data)
+            try:
+                model.full_clean()
+            except ValidationError as e:
+                model.errors = e.message_dict
+                return model
+            return model
+
         except KeyError:
             return None
 
@@ -104,9 +111,15 @@ def register(request):
         normal_billing_form = NormalBillingForm()
         post_billing_form = PostBillingForm()
         e_billing_form = EBillingForm()
+        billing_forms = {
+            'email': normal_billing_form,
+            'post': post_billing_form,
+            'ebilling': e_billing_form
+        }
+
         participant_count = int(request.POST['participant-count'])
 
-        # Regmodel will be removed if validation error from validating participants is encountered
+        # Regmodel and billingmodel will be removed if validation error from validating participants is encountered
         valid_registration = registration_form.is_valid()
         reg_model = None
         billing_model = None
@@ -116,11 +129,14 @@ def register(request):
 
         if reg_model:
             billing_model = populate_billing_type(reg_model, request.POST)
-            if billing_model:
+            billing_forms[reg_model.billing_type].instance = billing_model
+
+            if billing_model and not hasattr(billing_model, "errors"):
                 billing_model = billing_model.save()
             else:
-                logging.debug("unknown billing_type or validation failed")
                 valid_registration = False
+                if billing_model:
+                    billing_forms[reg_model.billing_type].errors.update(billing_model.errors)
 
         allowed_keys = {}
         for key in request.POST:
@@ -138,7 +154,8 @@ def register(request):
         else:
             if reg_model:
                 reg_model.delete()
-            if billing_model:
+
+            if billing_model and not hasattr(billing_model, "errors"):
                 billing_model.delete()
 
             participant_forms = []
