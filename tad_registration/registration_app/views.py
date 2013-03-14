@@ -49,17 +49,9 @@ def register(request):
 
     def populate_billing_type(reg_model, data):
         def populate_common(billing_model, reg_model, data):
-            def get_non_empty_value(list):
-                ret = ''
-                for el in list:
-                    if el != '':
-                        ret = el
-                        break
-                return ret
-
-            billing_model.y_id = get_non_empty_value(data.getlist('y_id', None))
-            billing_model.recipient = get_non_empty_value(data.getlist('recipient', None))
-            billing_model.reference = get_non_empty_value(data.getlist('reference', None))
+            billing_model.y_id = data.get('y_id', '')
+            billing_model.recipient = data.get('recipient', '')
+            billing_model.reference = data.get('reference', '')
             billing_model.registration = reg_model
 
         def populate_email(reg_model, data):
@@ -106,16 +98,10 @@ def register(request):
         logging.debug("got registration")
 
         registration_form = RegistrationForm(request.POST)
-
-        # These will be populated later if necessary
         normal_billing_form = NormalBillingForm()
         post_billing_form = PostBillingForm()
         e_billing_form = EBillingForm()
-        billing_forms = {
-            'email': normal_billing_form,
-            'post': post_billing_form,
-            'ebilling': e_billing_form
-        }
+
 
         participant_count = int(request.POST['participant-count'])
 
@@ -128,14 +114,26 @@ def register(request):
             reg_model = registration_form.save()
 
             billing_model = populate_billing_type(reg_model, request.POST)
-            billing_forms[reg_model.billing_type].instance = billing_model
+
+            normal_billing_form = NormalBillingForm(instance=billing_model)
+            post_billing_form = PostBillingForm(instance=billing_model)
+            e_billing_form = EBillingForm(instance=billing_model)
+
+            billing_forms = {
+                'email': normal_billing_form,
+                'post': post_billing_form,
+                'ebilling': e_billing_form
+            }
 
             if billing_model and not hasattr(billing_model, "errors"):
                 billing_model = billing_model.save()
+
             else:
                 valid_registration = False
                 if billing_model:
                     billing_forms[reg_model.billing_type].errors.update(billing_model.errors)
+
+
 
         allowed_keys = {}
         for key in request.POST:

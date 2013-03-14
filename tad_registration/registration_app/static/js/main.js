@@ -37,6 +37,17 @@ $(function() {
             } else {
                 $(".normal_type, .post_type, .e_type").hide();
             }
+        },
+        clearAllButSelected = function() {
+            selected_type = $("#id_billing_type option:selected").val();
+            if (selected_type === "email") {
+                $(".post_type, .e_type").html("");
+            } else if (selected_type === "post") {
+                $(".normal_type, .e_type").html("");
+            } else if (selected_type === "ebilling") {
+                $(".e_type").show();
+                $(".normal_type, .post_type").html("");
+            }
         };
 
     $("#id_billing_type").change(showSelectedBillingType);
@@ -47,6 +58,7 @@ $(function() {
 
     $("#registration-form").submit(function(e) {
         appendIndexesToNames();
+        clearAllButSelected();
         $("#participant-count").attr("value", $(".participant").length)
         return true;
     });
