@@ -80,7 +80,7 @@ def register(request):
         def populate_ebilling(reg_model, data):
             e_model = EBillingType()
             populate_common(e_model, reg_model, data)
-            e_model.address = data.get('address')
+            e_model.billing_address = data.get('billing_address')
             e_model.operator = data.get('operator')
             return e_model
 
@@ -120,14 +120,13 @@ def register(request):
         participant_count = int(request.POST['participant-count'])
 
         # Regmodel and billingmodel will be removed if validation error from validating participants is encountered
-        valid_registration = registration_form.is_valid()
         reg_model = None
         billing_model = None
 
+        valid_registration = registration_form.is_valid()
         if valid_registration:
             reg_model = registration_form.save()
 
-        if reg_model:
             billing_model = populate_billing_type(reg_model, request.POST)
             billing_forms[reg_model.billing_type].instance = billing_model
 

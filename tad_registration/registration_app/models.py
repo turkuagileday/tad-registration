@@ -59,7 +59,7 @@ class PostBillingType(BillingType):
     extra_info = models.CharField(max_length=255)
 
 class EBillingType(BillingType):
-    address = models.CharField(max_length=255)
+    billing_address = models.CharField(max_length=255)
     operator = models.CharField(max_length=255)
 
 # FORMS
