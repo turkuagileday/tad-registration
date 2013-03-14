@@ -88,7 +88,6 @@ def register(request):
                 model.full_clean()
             except ValidationError as e:
                 model.errors = e.message_dict
-                return model
             return model
 
         except KeyError:
