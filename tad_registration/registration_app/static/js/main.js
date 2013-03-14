@@ -26,6 +26,18 @@ $(function() {
 
     $("#id_billing_type").change(function(e) {
         selected_type = $("#id_billing_type option:selected").val();
+        if (selected_type === "email") {
+            $(".normal_type").show();
+            $(".post_type, .e_type").hide();
+        } else if (selected_type === "post") {
+            $(".post_type").show();
+            $(".normal_type, .e_type").hide();
+        } else if (selected_type === "ebilling") {
+            $(".e_type").show();
+            $(".normal_type, .post_type").hide();
+        } else {
+            $(".normal_type, .post_type, .e_type").hide();
+        }
     });
     $(".add-participant").click(function(e) {
         addParticipant();
