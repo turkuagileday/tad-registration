@@ -1,7 +1,11 @@
+import logging
+from functools import partial
+
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import ValidationError
-from models import RegistrationForm, ParticipantForm, Participant, NormalBillingForm, PostBillingForm, EBillingForm
+from models import RegistrationForm, ParticipantForm, NormalBillingForm, PostBillingForm, EBillingForm
+from models import Participant, NormalBillingType, PostBillingType, EBillingType
 
 def registration(request):
     registration_form = RegistrationForm()
@@ -43,20 +47,80 @@ def register(request):
                 p.errors = e.message_dict
         return valid_participants
 
-    if request.method == "POST":
-        registration_form = RegistrationForm(request.POST)
-        normal_billing_form = NormalBillingForm(request.POST)
-        post_billing_form = PostBillingForm(request.POST)
-        e_billing_form = EBillingForm(request.POST)
+    def populate_billing_type(reg_model, data):
+        def populate_common(billing_model, reg_model, data):
+            def get_non_empty_value(list):
+                ret = ''
+                for el in list:
+                    if el != '':
+                        ret = el
+                        break
+                return ret
 
+            billing_model.y_id = get_non_empty_value(data.getlist('y_id', None))
+            billing_model.recipient = get_non_empty_value(data.getlist('recipient', None))
+            billing_model.reference = get_non_empty_value(data.getlist('reference', None))
+            billing_model.registration = reg_model
+
+        def populate_email(reg_model, data):
+            email_model = NormalBillingType()
+            populate_common(email_model, reg_model, data)
+            email_model.email_address = data.get('email_address', '')
+            return email_model
+
+        def populate_post(reg_model, data):
+            post_model = PostBillingType()
+            populate_common(post_model, reg_model, data)
+            post_model.address = data.get('address', '')
+            post_model.postal_code = data.get('postal_code', '')
+            post_model.post_office = data.get('post_office', '')
+            post_model.extra_info = data.get('extra_info', '')
+            return post_model
+
+        def populate_ebilling(reg_model, data):
+            e_model = EBillingType()
+            populate_common(e_model, reg_model, data)
+            e_model.address = data.get('address')
+            e_model.operator = data.get('operator')
+            return e_model
+
+        populate_funcs = {
+            'email': populate_email,
+            'post': populate_post,
+            'ebilling': populate_ebilling
+        }
+
+        try:
+            return populate_funcs[reg_model.billing_type](reg_model, data)
+        except KeyError:
+            return None
+
+    if request.method == "POST":
+        logging.debug("got registration")
+
+        registration_form = RegistrationForm(request.POST)
+
+        # These will be populated later if necessary
+        normal_billing_form = NormalBillingForm()
+        post_billing_form = PostBillingForm()
+        e_billing_form = EBillingForm()
         participant_count = int(request.POST['participant-count'])
 
         # Regmodel will be removed if validation error from validating participants is encountered
         valid_registration = registration_form.is_valid()
         reg_model = None
+        billing_model = None
+
         if valid_registration:
             reg_model = registration_form.save()
 
+        if reg_model:
+            billing_model = populate_billing_type(reg_model, request.POST)
+            if billing_model:
+                billing_model = billing_model.save()
+            else:
+                logging.debug("unknown billing_type or validation failed")
+                valid_registration = False
 
         allowed_keys = {}
         for key in request.POST:
@@ -74,6 +138,8 @@ def register(request):
         else:
             if reg_model:
                 reg_model.delete()
+            if billing_model:
+                billing_model.delete()
 
             participant_forms = []
             for model in participants:

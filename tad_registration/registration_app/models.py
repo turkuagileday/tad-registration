@@ -1,25 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
 
-class BillingType(models.Model):
-    y_id = models.CharField(max_length=255, blank=True) # y_id, ugh :(
-    recipient = models.CharField(max_length=255)
-    reference = models.CharField(max_length=255)
-
-class NormalBillingType(BillingType):
-    email_address = models.EmailField()
-
-class PostBillingType(BillingType):
-    extra_info = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-    postal_code = models.CharField(max_length=255)
-    post_office = models.CharField(max_length=255)
-
-class EBillingType(BillingType):
-    address = models.CharField(max_length=255)
-    operator = models.CharField(max_length=255)
-
-
 class Registration(models.Model):
     """
     Represent single registration.
@@ -62,6 +43,24 @@ class Participant(models.Model):
 
     registration = models.ForeignKey(Registration)
 
+class BillingType(models.Model):
+    y_id = models.CharField(max_length=255, blank=True) # y_id, ugh :(
+    recipient = models.CharField(max_length=255)
+    reference = models.CharField(max_length=255)
+    registration = models.ForeignKey(Registration)
+
+class NormalBillingType(BillingType):
+    email_address = models.EmailField()
+
+class PostBillingType(BillingType):
+    address = models.CharField(max_length=255)
+    postal_code = models.CharField(max_length=255)
+    post_office = models.CharField(max_length=255)
+    extra_info = models.CharField(max_length=255)
+
+class EBillingType(BillingType):
+    address = models.CharField(max_length=255)
+    operator = models.CharField(max_length=255)
 
 # FORMS
 class RegistrationForm(ModelForm):
@@ -76,11 +75,14 @@ class ParticipantForm(ModelForm):
 class NormalBillingForm(ModelForm):
     class Meta:
         model = NormalBillingType
+        exclude = ('registration')
 
 class PostBillingForm(ModelForm):
     class Meta:
         model = PostBillingType
+        exclude = ('registration')
 
 class EBillingForm(ModelForm):
     class Meta:
         model = EBillingType
+        exclude = ('registration')
