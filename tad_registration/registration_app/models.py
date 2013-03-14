@@ -72,3 +72,15 @@ class ParticipantForm(ModelForm):
     class Meta:
         model = Participant
         exclude = ('registration')
+
+class NormalBillingForm(ModelForm):
+    class Meta:
+        model = NormalBillingType
+
+class PostBillingForm(ModelForm):
+    class Meta:
+        model = PostBillingType
+
+class EBillingForm(ModelForm):
+    class Meta:
+        model = EBillingType

@@ -1,14 +1,20 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import ValidationError
-from models import RegistrationForm, ParticipantForm, Participant
+from models import RegistrationForm, ParticipantForm, Participant, NormalBillingForm, PostBillingForm, EBillingForm
 
 def registration(request):
     registration_form = RegistrationForm()
     participant_form = ParticipantForm()
+    normal_billing_form = NormalBillingForm()
+    post_billing_form = PostBillingForm()
+    e_billing_form = EBillingForm()
     return render(request, 'registration.html', {
         'reg_form': registration_form,
-        'part_forms': (participant_form, )
+        'part_forms': (participant_form, ),
+        'normal_billing_form': normal_billing_form,
+        'post_billing_form': post_billing_form,
+        'e_billing_form': e_billing_form
       })
 
 def register(request):
@@ -39,6 +45,10 @@ def register(request):
 
     if request.method == "POST":
         registration_form = RegistrationForm(request.POST)
+        normal_billing_form = NormalBillingForm(request.POST)
+        post_billing_form = PostBillingForm(request.POST)
+        e_billing_form = EBillingForm(request.POST)
+
         participant_count = int(request.POST['participant-count'])
 
         # Regmodel will be removed if validation error from validating participants is encountered
@@ -74,7 +84,10 @@ def register(request):
 
             return render(request, 'registration.html', {
                 'reg_form': registration_form,
-                'part_forms': participant_forms
+                'part_forms': participant_forms,
+                'normal_billing_form': normal_billing_form,
+                'post_billing_form': post_billing_form,
+                'e_billing_form': e_billing_form
             })
     else:
         return HttpResponseRedirect('/')

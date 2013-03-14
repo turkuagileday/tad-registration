@@ -15,6 +15,14 @@
     %input#participant-count(type="hidden" name="participant-count" value="0")
     .registration
       {{ reg_form.as_p }}
+      .billing_types
+        .normal_type(style="display: none")
+          {{ normal_billing_form.as_p }}
+        .post_type(style="display: none")
+          {{ post_billing_form.as_p }}
+        .e_billing(style="display: none")
+          {{ e_billing_form.as_p }}
+
     .participants
       {% for part_form in part_forms %}
       .participant

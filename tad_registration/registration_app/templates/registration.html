@@ -14,6 +14,17 @@
     <input id='participant-count' name='participant-count' type='hidden' value='0' />
     <div class='registration'>
       {{ reg_form.as_p }}
+      <div class='billing_types'>
+        <div class='normal_type' style='display: none'>
+          {{ normal_billing_form.as_p }}
+        </div>
+        <div class='post_type' style='display: none'>
+          {{ post_billing_form.as_p }}
+        </div>
+        <div class='e_billing' style='display: none'>
+          {{ e_billing_form.as_p }}
+        </div>
+      </div>
     </div>
     <div class='participants'>
       {% for part_form in part_forms %}

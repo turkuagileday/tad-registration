@@ -24,6 +24,9 @@ $(function() {
             });
         };
 
+    $("#id_billing_type").change(function(e) {
+        selected_type = $("#id_billing_type option:selected").val();
+    });
     $(".add-participant").click(function(e) {
         addParticipant();
         updateParticipantCount();
