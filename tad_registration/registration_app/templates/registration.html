@@ -2,15 +2,20 @@
 <head>
   <meta content="text/html; charset='utf-8'" http-equiv='Content-type' />
   <title>Turku Agile Day 2013 registration</title>
+  
+  <link href='http://fonts.googleapis.com/css?family=Kreon:400' rel='stylesheet' type='text/css'>
+  <link href='/static/css/site.css' media='screen' rel='stylesheet' type='text/css'>
+  
   <script src='/static/js/jquery.js'></script>
   <script src='/static/js/underscore.js'></script>
   <script src='/static/js/parsley.min.js'></script>
   <script src='/static/js/main.js'></script>
-  <link href='/static/css/site.css' media='screen' rel='stylesheet' type='text/css'>
+  
 </head>
 <body>
   <div id="wrap">
-    <h1>Turku Agile Day registration</h1>
+    <h1><img src="/static/img/tad013.png" alt="Turku Agile Day 2013"></h1>
+    <h2>Registration</h2>
     <form action='register' id='registration-form' method='post'>
       {% csrf_token %}
       <input id='participant-count' name='participant-count' type='hidden' value='0'>
@@ -47,11 +52,12 @@
           
         </section>
         
-        <button id='add-participant'>Add another participant</button>
+        <button id='add-participant'>+ Add another participant</button>
       </fieldset>
       
-      <input type='submit' value='Submit registration'>
-      
+      <div class="controls">
+        <input type='submit' value='Submit registration'>
+      </div>
     </form>
   </div>
 </body>
