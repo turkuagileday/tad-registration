@@ -3,7 +3,6 @@ tad-registration
 
 Registration system for Turku Agile Day
 
-Depencies
+Installation
 ---------
-
-Django==1.5
+`pip install -r requirements.txt`
