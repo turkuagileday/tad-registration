@@ -51,7 +51,9 @@ $(function() {
         };
 
     $("#id_billing_type").change(showSelectedBillingType);
-    $(".add-participant").click(function(e) {
+    $("#add-participant").on('click', function(e) {
+        e.preventDefault();
+        
         addParticipant();
         updateParticipantCount();
     });

@@ -1,39 +1,57 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <head>
   <meta content="text/html; charset='utf-8'" http-equiv='Content-type' />
-  <title>Turku Agile Day 2013 registratin</title>
+  <title>Turku Agile Day 2013 registration</title>
   <script src='/static/js/jquery.js'></script>
   <script src='/static/js/underscore.js'></script>
+  <script src='/static/js/parsley.min.js'></script>
   <script src='/static/js/main.js'></script>
-  <link href='/static/css/site.css' media='screen' rel='stylesheet' type='text/css' />
+  <link href='/static/css/site.css' media='screen' rel='stylesheet' type='text/css'>
 </head>
 <body>
-  <h1>Turku Agile Day registration</h1>
-  <form action='register' id='registration-form' method='post'>
-    {% csrf_token %}
-    <input id='participant-count' name='participant-count' type='hidden' value='0' />
-    <div class='registration'>
-      {{ reg_form.as_p }}
-      <div class='billing_types'>
-        <div class='normal_type' style='display: none'>
-          {{ normal_billing_form.as_p }}
-        </div>
-        <div class='post_type' style='display: none'>
-          {{ post_billing_form.as_p }}
-        </div>
-        <div class='e_type' style='display: none'>
-          {{ e_billing_form.as_p }}
-        </div>
-      </div>
-    </div>
-    <div class='participants'>
-      {% for part_form in part_forms %}
-      <div class='participant'>
-        {{ part_form.as_p }}
-      </div>
-      {% endfor %}
-    </div>
-    <div class='add-participant'></div>
-    <input type='submit' value='Register' />
-  </form>
+  <div id="wrap">
+    <h1>Turku Agile Day registration</h1>
+    <form action='register' id='registration-form' method='post'>
+      {% csrf_token %}
+      <input id='participant-count' name='participant-count' type='hidden' value='0'>
+      
+      <fieldset class='registration'>
+        <legend>Billing information</legend>
+      
+        {{ reg_form.as_p }}
+      
+        <section class='billing_types'>
+          <div class='normal_type' style='display: none'>
+            {{ normal_billing_form.as_p }}
+          </div>
+          <div class='post_type' style='display: none'>
+            {{ post_billing_form.as_p }}
+          </div>
+          <div class='e_type' style='display: none'>
+            {{ e_billing_form.as_p }}
+          </div>
+        </section>
+      
+      </fieldset>
+      
+      <fieldset>
+        <legend>Participants</legend>
+        
+        <section class='participants'>
+        
+          {% for part_form in part_forms %}
+          <article class='participant'>
+            {{ part_form.as_p }}
+          </article>
+          {% endfor %}
+          
+        </section>
+        
+        <button id='add-participant'>Add another participant</button>
+      </fieldset>
+      
+      <input type='submit' value='Submit registration'>
+      
+    </form>
+  </div>
 </body>
