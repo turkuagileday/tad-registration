@@ -23,6 +23,8 @@ class Registration(models.Model):
     contact_person = models.CharField(max_length=255)
     organisation = models.CharField(max_length=255)
     billing_type = models.CharField(max_length=255, choices=BILLING_TYPE_CHOICES)
+    invoice_customer_id = models.IntegerField(blank=True, null=True)
+    invoice_invoice_id = models.IntegerField(blank=True, null=True)
 
 class Participant(models.Model):
     PARTICIPATION_CHOICES = (
@@ -51,8 +53,6 @@ class Participant(models.Model):
           'student': 10
         }
         return payments[self.participation_choice]
-
-        
 
     name = models.CharField(max_length=255)
     participation_choice = models.CharField(max_length=255, choices=PARTICIPATION_CHOICES)
@@ -83,3 +83,29 @@ class PostBillingType(BillingType):
 class EBillingType(BillingType):
     billing_address = models.CharField(max_length=255)
     operator = models.CharField(max_length=255)
+
+# FORMS
+class RegistrationForm(ModelForm):
+    class Meta:
+        model = Registration
+        exclude = ('invoice_customer_id, invoice_invoice_id')
+
+class ParticipantForm(ModelForm):
+    class Meta:
+        model = Participant
+        exclude = ('registration')
+
+class NormalBillingForm(ModelForm):
+    class Meta:
+        model = NormalBillingType
+        exclude = ('registration')
+
+class PostBillingForm(ModelForm):
+    class Meta:
+        model = PostBillingType
+        exclude = ('registration')
+
+class EBillingForm(ModelForm):
+    class Meta:
+        model = EBillingType
+        exclude = ('registration')
