@@ -4,7 +4,7 @@ from functools import partial
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import ValidationError
-from models import RegistrationForm, ParticipantForm, NormalBillingForm, PostBillingForm, EBillingForm
+from forms import RegistrationForm, ParticipantForm, NormalBillingForm, PostBillingForm, EBillingForm
 from models import Participant, NormalBillingType, PostBillingType, EBillingType
 
 def registration(request):

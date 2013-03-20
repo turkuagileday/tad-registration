@@ -1,5 +1,4 @@
 from django.db import models
-from django.forms import ModelForm
 
 class Registration(models.Model):
     """
@@ -61,28 +60,3 @@ class PostBillingType(BillingType):
 class EBillingType(BillingType):
     billing_address = models.CharField(max_length=255)
     operator = models.CharField(max_length=255)
-
-# FORMS
-class RegistrationForm(ModelForm):
-    class Meta:
-        model = Registration
-
-class ParticipantForm(ModelForm):
-    class Meta:
-        model = Participant
-        exclude = ('registration')
-
-class NormalBillingForm(ModelForm):
-    class Meta:
-        model = NormalBillingType
-        exclude = ('registration')
-
-class PostBillingForm(ModelForm):
-    class Meta:
-        model = PostBillingType
-        exclude = ('registration')
-
-class EBillingForm(ModelForm):
-    class Meta:
-        model = EBillingType
-        exclude = ('registration')
