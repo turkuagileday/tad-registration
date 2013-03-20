@@ -16,7 +16,7 @@
   <div id="wrap">
     <h1><img src="/static/img/tad013.png" alt="Turku Agile Day 2013"></h1>
     <h2>Registration</h2>
-    <form action='register' id='registration-form' method='post'>
+    <form action='register' id='registration-form' method='post' data-validate="parsley">
       {% csrf_token %}
       <input id='participant-count' name='participant-count' type='hidden' value='0'>
       

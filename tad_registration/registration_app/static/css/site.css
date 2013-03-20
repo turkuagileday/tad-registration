@@ -378,6 +378,10 @@ label {
   display: inline-block;
   width: 180px; }
 
+.required label:after {
+  content: ' *';
+  color: #900; }
+
 input[type=text],
 textarea {
   border: 1px solid #c2c2c2;
@@ -432,3 +436,35 @@ button, input[type=submit], .button {
   border-top: 1px solid #c2c2c2;
   padding: 1em 0;
   text-align: right; }
+
+/* Parsley / Form validation */
+.parsley-error {
+  border: 1px solid #900 !important; }
+
+ul.parsley-error-list,
+ul.errorlist {
+  display: inline-block !important;
+  margin: 0 0 0 8px;
+  padding: 4px 8px;
+  border: 1px solid #900;
+  background: #ffe5e5;
+  color: #900;
+  position: relative; }
+  ul.parsley-error-list:after,
+  ul.errorlist:after {
+    content: '';
+    position: absolute;
+    left: -9px;
+    top: 50%;
+    display: block;
+    height: 0;
+    width: 0;
+    margin-top: -4px;
+    border: 4px solid transparent;
+    border-right-color: #900; }
+  ul.parsley-error-list li,
+  ul.errorlist li {
+    list-style-type: none; }
+
+ul.errorlist {
+  float: right; }
