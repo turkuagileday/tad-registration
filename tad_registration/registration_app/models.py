@@ -11,6 +11,16 @@ class Registration(models.Model):
         ('post', 'Post'),
         ('ebilling', 'E-billing')
     )
+    def get_registration_cost(self):
+        cost = 0
+        for p in self.participant_set.all():
+            cost += p.get_participation_cost()
+
+        if self.billing_type != 'email':
+            cost += 5
+
+        return cost
+
     contact_person = models.CharField(max_length=255)
     organisation = models.CharField(max_length=255)
     billing_type = models.CharField(max_length=255, choices=BILLING_TYPE_CHOICES)
@@ -69,7 +79,7 @@ class PostBillingType(BillingType):
     address = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=255)
     post_office = models.CharField(max_length=255)
-    extra_info = models.CharField(max_length=255)
+    extra_info = models.CharField(max_length=255, blank=True)
 
 class EBillingType(BillingType):
     billing_address = models.CharField(max_length=255)
