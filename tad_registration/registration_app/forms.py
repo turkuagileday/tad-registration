@@ -7,6 +7,7 @@ class RegistrationForm(ModelForm):
     required_css_class = 'required'
     class Meta:
         model = Registration
+        exclude = ('invoice_customer_id, invoice_invoice_id')
 
 
 @parsleyfy
