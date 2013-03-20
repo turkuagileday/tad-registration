@@ -25,12 +25,25 @@ class Participant(models.Model):
     )
 
     T_SHIRT_SIZE = (
+        ('no_shirt', "I don't want t-shirt"),
         ('S', 'S'),
         ('M', 'M'),
         ('L', 'L'),
         ('XL', 'XL'),
         ('XXL', 'XXL')
     )
+
+    def get_participation_cost(self):
+        payments = {
+          'both_days': 200,
+          'both_days_member': 180,
+          'conference_day': 140,
+          'conference_day_member': 130,
+          'student': 10
+        }
+        return payments[self.participation_choice]
+
+        
 
     name = models.CharField(max_length=255)
     participation_choice = models.CharField(max_length=255, choices=PARTICIPATION_CHOICES)
@@ -44,9 +57,9 @@ class Participant(models.Model):
     registration = models.ForeignKey(Registration)
 
 class BillingType(models.Model):
-    y_id = models.CharField(max_length=255, blank=True) # y_id, ugh :(
+    vat_no = models.CharField(max_length=255, blank=True)
     recipient = models.CharField(max_length=255)
-    reference = models.CharField(max_length=255)
+    reference = models.CharField(max_length=255, blank=True)
     registration = models.ForeignKey(Registration)
 
 class NormalBillingType(BillingType):
