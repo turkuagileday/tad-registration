@@ -7,6 +7,8 @@ from django.core.exceptions import ValidationError
 from forms import RegistrationForm, ParticipantForm, NormalBillingForm, PostBillingForm, EBillingForm
 from models import Participant, NormalBillingType, PostBillingType, EBillingType
 
+from communicator import Communicator
+
 def registration(request):
     registration_form = RegistrationForm()
     participant_form = ParticipantForm()
@@ -93,6 +95,11 @@ def register(request):
         except KeyError:
             return None
 
+    def handle_communication(reg_model):
+        communicator = Communicator(reg_model)
+        communicator.send_customer_registration()
+        communicator.send_invoice_registration()
+
     if request.method == "POST":
         logging.debug("got registration")
 
@@ -146,6 +153,8 @@ def register(request):
         if valid_participants and valid_registration:
             for p in participants:
                 p.save()
+            # When models has been saved, handle communicaiton between user and background systems
+            handle_communication(reg_model)
             return HttpResponse("success")
         else:
             if reg_model:
