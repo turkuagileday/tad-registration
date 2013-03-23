@@ -48,12 +48,21 @@ $(function() {
                 $(".e_type").show();
                 $(".normal_type, .post_type").html("");
             }
+        },
+        removeParsleyValidationFromInvisibleElements = function() {
+          $('#registration-form').parsley('addListener', {
+            onFieldValidate: function(el) {
+              if (!$(el).is(':visible')) {
+                return true;
+              }
+              return false;
+            }
+          });
         };
 
     $("#id_billing_type").change(showSelectedBillingType);
     $("#add-participant").on('click', function(e) {
         e.preventDefault();
-        
         addParticipant();
         updateParticipantCount();
     });
@@ -61,6 +70,7 @@ $(function() {
     $("#registration-form").submit(function(e) {
         appendIndexesToNames();
         clearAllButSelected();
+        removeParsleyValidationFromInvisibleElements();
         $("#participant-count").attr("value", $(".participant").length)
         return true;
     });
