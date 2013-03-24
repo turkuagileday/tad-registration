@@ -1,8 +1,9 @@
 import requests
 import json
 import datetime
+import tad_registration.settings as settings
 
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mail
 
 TIME_FORMAT = '%Y-%m-%d'
 HEADERS = {
@@ -33,10 +34,16 @@ class Communicator():
             payload['zip'] = post_type.postal_code
             payload['city'] = post_type.post_office
 
+        def add_ebilling_payload(payload):
+            billing_type = self._registration.billingtype_set.get()
+            e_billing = billing_type.ebillingtype
+            payload['edi_address'] = e_billing.billing_address
+            payload['edi_operator'] = e_billing.operator
+
         payload = {}
         payload['name'] = self._registration.contact_person
         payload['contact_person'] = self._registration.billingtype_set.get().recipient
-        {'post': add_post_payload, 'email': add_email_payload}[self._registration.billing_type](payload)
+        {'post': add_post_payload, 'email': add_email_payload, 'ebilling': add_ebilling_payload}[self._registration.billing_type](payload)
         response = requests.post(url = BASE_URL + 'customers', data=json.dumps(payload), headers=HEADERS, auth=AUTH_CREDENTIALS)
         if response.status_code == 201:
             self._registration.invoice_customer_id = response.json()['id']
@@ -99,6 +106,16 @@ class Communicator():
         if self._registration.invoice_customer_id <= 0:
             raise ValueError('Registration must have invoice_customer_id before sending invoice')
 
+        def construct_extra_billing_row():
+            ret = {
+                'product_number': 1005,
+                'name': 'Invoice cost',
+                'unit_price': 5,
+                'vat_percent': 0,
+                'amount': 1
+            }
+            return ret
+
         now = datetime.datetime.now()
         two_weeks = now + datetime.timedelta(days=14)
         payload = {}
@@ -122,6 +139,9 @@ class Communicator():
                 row = row_constructors[p_type](participants)
                 payload['invoice_rows'].append(row)
 
+        if self._registration.billing_type != 'email':
+            payload['invoice_rows'].append(construct_extra_billing_row())
+
         response = requests.post(url = BASE_URL + 'invoices', data=json.dumps(payload), headers=HEADERS, auth=AUTH_CREDENTIALS)
         if response.status_code == 201:
             self._registration.invoice_invoice_id = response.json()['id']
@@ -129,15 +149,16 @@ class Communicator():
         else:
             raise RuntimeError("Invalid status code")
 
+    def _download_invoice(self):
+        invoice_id = self._registration.invoice_invoice_id
+        pdf_location = '{url}invoices/{invoice_id}.pdf'.format(url=BASE_URL, invoice_id=invoice_id) 
+        response = requests.get(url = pdf_location, headers=HEADERS, auth=AUTH_CREDENTIALS)
+        if response.status_code == 200:
+            return response.content
+        else:
+            raise RuntimeError("Invalid status code")
+
     def send_invoice_email(self):
-        def download_invoice():
-            invoice_id = self._registration.invoice_invoice_id
-            pdf_location = '{url}invoices/{invoice_id}.pdf'.format(url=BASE_URL, invoice_id=invoice_id) 
-            response = requests.get(url = pdf_location, headers=HEADERS, auth=AUTH_CREDENTIALS)
-            if response.status_code == 200:
-                return response.content
-            else:
-                raise RuntimeError("Invalid status code")
         """
         Sends email about registration to user. Expects that billing_type is email and email is set
         """
@@ -145,8 +166,19 @@ class Communicator():
         subject = 'Registration for Turku Agile Day 2013'
         message = 'Thank you for your registration to Turku Agile Day 2013. Attachment contains an invoice from your registration.\n\nYours,\nTurku Agile Day team'
 
-        invoice = download_invoice()
-        email = EmailMessage(subject, message, 'info@turkuagileday.fi', (to, ))
+        invoice = self._download_invoice()
+        email = EmailMessage(subject, message, 'registration@turkuagileday.fi', (to, ))
         email.attach('tad_invoice.pdf', invoice, 'application/pdf')
         email.send()
 
+
+    def send_notification_email(self):
+        """
+        Sends notification mail to NOTIFICATION_RECEIVERS
+        """
+        invoice = self._download_invoice()
+        subject = 'Message from TAD-registration system'
+        message = 'Turku Agile Day registration system received invoice which requires your attention!'
+        email = EmailMessage(subject, message, 'registration@turkuagileday.fi', settings.NOTIFICATION_RECEIVERS)
+        email.attach('tad_invoice.pdf', invoice, 'application/pdf')
+        email.send()

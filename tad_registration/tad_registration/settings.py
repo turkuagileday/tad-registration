@@ -7,6 +7,10 @@ TEMPLATE_DEBUG = DEBUG
 EMAIL_HOST='localhost'
 EMAIL_PORT=587
 
+NOTIFICATION_RECEIVERS = (
+    'valtteri.virtanen@gmail.com',
+)
+
 ADMINS = (
      ('Valtteri Virtanen', 'valtteri.virtanen@gmail.com'),
 )
