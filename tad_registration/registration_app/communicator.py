@@ -103,8 +103,6 @@ class Communicator():
                 'amount': len(participants)
             }
             return ret
-        if self._registration.invoice_customer_id <= 0:
-            raise ValueError('Registration must have invoice_customer_id before sending invoice')
 
         def construct_extra_billing_row():
             ret = {
@@ -115,6 +113,10 @@ class Communicator():
                 'amount': 1
             }
             return ret
+
+        if self._registration.invoice_customer_id <= 0:
+            raise ValueError('Registration must have invoice_customer_id before sending invoice')
+
 
         now = datetime.datetime.now()
         two_weeks = now + datetime.timedelta(days=14)
