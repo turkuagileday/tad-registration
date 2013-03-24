@@ -3,6 +3,10 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+# TODO: CHANGE IF NEEDED
+EMAIL_HOST='localhost'
+EMAIL_PORT=587
+
 ADMINS = (
      ('Valtteri Virtanen', 'valtteri.virtanen@gmail.com'),
 )

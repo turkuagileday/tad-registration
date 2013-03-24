@@ -97,8 +97,14 @@ def register(request):
 
     def handle_communication(reg_model):
         communicator = Communicator(reg_model)
-        communicator.send_customer_registration()
-        communicator.send_invoice_registration()
+        try:
+            pass
+            communicator.send_customer_registration()
+            communicator.send_invoice_registration()
+            if reg_model.billing_type == 'email':
+                communicator.send_invoice_email()
+        except RuntimeError:
+            logging.error("Invalid statuscode. Is cloudvoice working. Email wasn't sent")
 
     if request.method == "POST":
         logging.debug("got registration")

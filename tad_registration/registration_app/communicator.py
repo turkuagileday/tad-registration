@@ -1,6 +1,9 @@
 import requests
 import json
 import datetime
+
+from django.core.mail import EmailMessage
+
 TIME_FORMAT = '%Y-%m-%d'
 HEADERS = {
     'Content-Type': 'application/json',
@@ -35,8 +38,11 @@ class Communicator():
         payload['contact_person'] = self._registration.billingtype_set.get().recipient
         {'post': add_post_payload, 'email': add_email_payload}[self._registration.billing_type](payload)
         response = requests.post(url = BASE_URL + 'customers', data=json.dumps(payload), headers=HEADERS, auth=AUTH_CREDENTIALS)
-        self._registration.invoice_customer_id = response.json()['id']
-        self._registration.save()
+        if response.status_code == 201:
+            self._registration.invoice_customer_id = response.json()['id']
+            self._registration.save()
+        else:
+            raise RuntimeError("Invalid status code")
 
     def send_invoice_registration(self):
         """
@@ -117,7 +123,30 @@ class Communicator():
                 payload['invoice_rows'].append(row)
 
         response = requests.post(url = BASE_URL + 'invoices', data=json.dumps(payload), headers=HEADERS, auth=AUTH_CREDENTIALS)
-        self._registration.invoice_invoice_id = response.json()['id']
-        self._registration.save()
+        if response.status_code == 201:
+            self._registration.invoice_invoice_id = response.json()['id']
+            self._registration.save()
+        else:
+            raise RuntimeError("Invalid status code")
 
+    def send_invoice_email(self):
+        def download_invoice():
+            invoice_id = self._registration.invoice_invoice_id
+            pdf_location = '{url}invoices/{invoice_id}.pdf'.format(url=BASE_URL, invoice_id=invoice_id) 
+            response = requests.get(url = pdf_location, headers=HEADERS, auth=AUTH_CREDENTIALS)
+            if response.status_code == 200:
+                return response.content
+            else:
+                raise RuntimeError("Invalid status code")
+        """
+        Sends email about registration to user. Expects that billing_type is email and email is set
+        """
+        to = self._registration.billingtype_set.get().normalbillingtype.email_address
+        subject = 'Registration for Turku Agile Day 2013'
+        message = 'Thank you for your registration to Turku Agile Day 2013. Attachment contains an invoice from your registration.\n\nYours,\nTurku Agile Day team'
+
+        invoice = download_invoice()
+        email = EmailMessage(subject, message, 'info@turkuagileday.fi', (to, ))
+        email.attach('tad_invoice.pdf', invoice, 'application/pdf')
+        email.send()
 
