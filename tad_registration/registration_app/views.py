@@ -161,7 +161,7 @@ def register(request):
                 p.save()
             # When models has been saved, handle communicaiton between user and background systems
             handle_communication(reg_model)
-            return HttpResponse("success")
+            return render(request, 'success.html')
         else:
             if reg_model:
                 reg_model.delete()
