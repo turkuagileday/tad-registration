@@ -27,6 +27,9 @@ class Registration(models.Model):
     invoice_customer_id = models.IntegerField(blank=True, null=True)
     invoice_invoice_id = models.IntegerField(blank=True, null=True)
 
+    def __unicode__(self):
+        return self.organisation + ' (' + self.contact_person + ')'
+
 class Participant(models.Model):
     PARTICIPATION_CHOICES = (
         ('both_days', 'Both days'),
@@ -59,13 +62,16 @@ class Participant(models.Model):
     participation_choice = models.CharField(max_length=255, choices=PARTICIPATION_CHOICES, help_text="Member choices are for Asteriski ry and Digit ry members only!")
     conference_dinner = models.BooleanField(default=True, help_text="Not selecting this does not affect the price, it only allows us to reduce waste by not ordering too much food. You can change this until May 1st by notifying us at registration@turkuagileday.fi.")
     special_diet = models.CharField(max_length=255, blank=True)
-    t_shirt_size = models.CharField(max_length=255, choices=T_SHIRT_SIZE, help_text="Getting the T-shirts depends on finding a T-shirt sponsor. Interested? Ask more information from <a href=\"mailto:info@turkuagileday.fi\">info@turkuagileday.fi</a>!")
+    t_shirt_size = models.CharField(max_length=255, choices=T_SHIRT_SIZE, help_text="Getting the T-shirts depends on finding a T-shirt sponsor. Interested? Ask more about sponsoring us from <a href=\"mailto:info@turkuagileday.fi\">info@turkuagileday.fi</a>!")
     twitter_account = models.CharField(max_length=255, blank=True)
     email_address = models.EmailField()
 # TODO: WORKSHOPS!
     other_info = models.TextField(blank=True)
 
     registration = models.ForeignKey(Registration)
+
+    def __unicode__(self):
+        return self.name + ' (' + self.participation_choice + ')'
 
 class BillingType(models.Model):
     vat_no = models.CharField(max_length=255, blank=True)
