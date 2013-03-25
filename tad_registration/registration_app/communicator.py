@@ -11,7 +11,7 @@ HEADERS = {
     'Accept': 'application/json'
 }
 BASE_URL = 'http://cloudinvoice.herokuapp.com/'
-AUTH_CREDENTIALS = ('NICE', 'TRY')
+AUTH_CREDENTIALS = settings.CLOUDINVOICE_CREDENTIALS
 class Communicator():
     """
     Class which will handle communication with other systems. Also handles communications to users (emails)
@@ -165,19 +165,25 @@ class Communicator():
         Sends email about registration to user. Expects that billing_type is email and email is set
         """
         to = self._registration.billingtype_set.get().normalbillingtype.email_address
-        subject = 'Registration for Turku Agile Day 2013'
-        message = 'Thank you for your registration to Turku Agile Day 2013. Attachment contains an invoice from your registration.\n\nYours,\nTurku Agile Day team'
+        subject = 'Your registration for Turku Agile Day 2013'
+        message = 'Thank you for your registration to Turku Agile Day 2013! Your registration has been successfully recorded.\n\nAttached is an invoice for the participation fee. If you need the invoice as either e-invoice or via traditional post, please inform us at invoicing@turkuagileday.fi. A handling fee of 5 EUR is applied for e-invoices and paper invoices sent via post.\n\nIf you have any questions about the event or your registration, please don\'t hesitate to contact us at info@turkuagileday.fi!\n\nYours,\n-- \nTurku Agile Day team\ninfo@turkuagileday.fi'
 
         invoice = self._download_invoice()
         email = EmailMessage(subject, message, 'registration@turkuagileday.fi', (to, ))
         email.attach('tad_invoice.pdf', invoice, 'application/pdf')
         email.send()
 
-
     def send_notification_email(self):
         """
         Sends notification mail to NOTIFICATION_RECEIVERS
         """
+
+        to = self._registration.email_address
+        subject = 'Your registration for Turku Agile Day 2013'
+        message = 'Thank you for your registration to Turku Agile Day 2013! Your registration has been successfully recorded.\n\nThe invoice for your registration will be sent to you separately via the method of your choice.\n\nIf you have any questions about the event or your registration, please don\'t hesitate to contact us at info@turkuagileday.fi!\n\nYours,\n-- \nTurku Agile Day team\ninfo@turkuagileday.fi'
+        email = EmailMessage(subject, message, 'registration@turkuagileday.fi', (to, ))
+        email.send()
+
         invoice = self._download_invoice()
         subject = 'Message from TAD-registration system'
         message = 'Turku Agile Day registration system received invoice which requires your attention!'
