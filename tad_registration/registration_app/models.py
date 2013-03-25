@@ -71,6 +71,11 @@ class Participant(models.Model):
 
     registration = models.ForeignKey(Registration)
 
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        if self.participation_choice == 'student' and self.conference_dinner == True:
+            raise ValidationError('Student price does not include the conference dinner!')
+
     def __unicode__(self):
         return self.name + ' (' + self.participation_choice + ')'
 
