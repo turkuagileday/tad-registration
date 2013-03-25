@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from django.db import models
 
 class Registration(models.Model):
@@ -32,11 +33,11 @@ class Registration(models.Model):
 
 class Participant(models.Model):
     PARTICIPATION_CHOICES = (
-        ('both_days', 'Both days'),
-        ('both_days_member', 'Both days (member)'),
-        ('conference_day', 'Conference day'),
-        ('conference_day_member', 'Conference day (member)'),
-        ('student', 'Student')
+        ('both_days', 'Both days – 200 €'),
+        ('both_days_member', 'Both days (member) – 180 €'),
+        ('conference_day', 'Conference day – 140 €'),
+        ('conference_day_member', 'Conference day (member) – 130 €'),
+        ('student', 'Student – 10 €')
     )
 
     T_SHIRT_SIZE = (
