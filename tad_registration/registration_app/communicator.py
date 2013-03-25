@@ -11,7 +11,7 @@ HEADERS = {
     'Accept': 'application/json'
 }
 BASE_URL = 'http://cloudinvoice.herokuapp.com/'
-AUTH_CREDENTIALS = ('NICE', 'TRY')
+AUTH_CREDENTIALS = settings.CLOUDINVOICE_CREDENTIALS
 class Communicator():
     """
     Class which will handle communication with other systems. Also handles communications to users (emails)
