@@ -59,7 +59,7 @@ class Participant(models.Model):
     participation_choice = models.CharField(max_length=255, choices=PARTICIPATION_CHOICES, help_text="Member choices are for Asteriski ry and Digit ry members only!")
     conference_dinner = models.BooleanField(default=True, help_text="Not selecting this does not affect the price, it only allows us to reduce waste by not ordering too much food. You can change this until May 1st by notifying us at registration@turkuagileday.fi.")
     special_diet = models.CharField(max_length=255, blank=True)
-    t_shirt_size = models.CharField(max_length=255, choices=T_SHIRT_SIZE)
+    t_shirt_size = models.CharField(max_length=255, choices=T_SHIRT_SIZE, help_text="Getting the T-shirts depends on finding a T-shirt sponsor. Interested? Ask more information from <a href=\"mailto:info@turkuagileday.fi\">info@turkuagileday.fi</a>!")
     twitter_account = models.CharField(max_length=255, blank=True)
     email_address = models.EmailField()
 # TODO: WORKSHOPS!
