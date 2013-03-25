@@ -468,3 +468,17 @@ ul.errorlist {
 
 ul.errorlist {
   float: right; }
+
+.helptext {
+
+display: block;
+
+margin-left: 183px;
+
+margin-top: 5px;
+
+font-size: 0.857em;
+
+color: #777;
+
+}
