@@ -22,7 +22,8 @@ class Registration(models.Model):
 
     contact_person = models.CharField(max_length=255)
     organisation = models.CharField(max_length=255)
-    billing_type = models.CharField(max_length=255, choices=BILLING_TYPE_CHOICES)
+    email_address = models.EmailField()
+    billing_type = models.CharField(max_length=255, choices=BILLING_TYPE_CHOICES, help_text="A processing fee of 5 EUR is applied for all billing types other than Email.")
     invoice_customer_id = models.IntegerField(blank=True, null=True)
     invoice_invoice_id = models.IntegerField(blank=True, null=True)
 
@@ -55,11 +56,12 @@ class Participant(models.Model):
         return payments[self.participation_choice]
 
     name = models.CharField(max_length=255)
-    participation_choice = models.CharField(max_length=255, choices=PARTICIPATION_CHOICES)
-    conference_dinner = models.BooleanField()
+    participation_choice = models.CharField(max_length=255, choices=PARTICIPATION_CHOICES, help_text="Member choices are for Asteriski ry and Digit ry members only!")
+    conference_dinner = models.BooleanField(default=True, help_text="Not selecting this does not affect the price, it only allows us to reduce waste by not ordering too much food. You can change this until May 1st by notifying us at registration@turkuagileday.fi.")
     special_diet = models.CharField(max_length=255, blank=True)
     t_shirt_size = models.CharField(max_length=255, choices=T_SHIRT_SIZE)
     twitter_account = models.CharField(max_length=255, blank=True)
+    email_address = models.EmailField()
 # TODO: WORKSHOPS!
     other_info = models.TextField(blank=True)
 

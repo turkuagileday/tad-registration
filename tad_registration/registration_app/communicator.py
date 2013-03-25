@@ -173,11 +173,17 @@ class Communicator():
         email.attach('tad_invoice.pdf', invoice, 'application/pdf')
         email.send()
 
-
     def send_notification_email(self):
         """
         Sends notification mail to NOTIFICATION_RECEIVERS
         """
+
+        to = self._registration.email_address
+        subject = 'Your registration for Turku Agile Day 2013'
+        message = 'Thank you for your registration to Turku Agile Day 2013! Your registration has been successfully recorded.\n\nThe invoice for your registration will be sent to you separately via the method of your choice.\n\nIf you have any questions about the event or your registration, please don\'t hesitate to contact us at info@turkuagileday.fi!\n\nYours,\n-- \nTurku Agile Day team\ninfo@turkuagileday.fi'
+        email = EmailMessage(subject, message, 'registration@turkuagileday.fi', (to, ))
+        email.send()
+
         invoice = self._download_invoice()
         subject = 'Message from TAD-registration system'
         message = 'Turku Agile Day registration system received invoice which requires your attention!'
