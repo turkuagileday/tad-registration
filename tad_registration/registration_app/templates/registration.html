@@ -16,6 +16,14 @@
   <div id="wrap">
     <h1><a href="http://www.turkuagileday.fi/"><img src="/static/img/tad013.png" alt="Turku Agile Day 2013"></a></h1>
     <h2>Registration</h2>
+    <legend>Prices</legend>
+    <ul class="prices">
+      <li>Both days – 200 €</li>
+      <li>Both days (Member of Digit Ry or Asteriski Ry) – 180 €</li>
+      <li>Conference day – 140 €</li>
+      <li>Conference day (Member of Digit Ry or Asteriski Ry) – 130 €</li>
+      <li>Conference day (Student) – 10 €</li>
+    </ul>
     <form action='register' id='registration-form' method='post' data-validate="parsley">
       {% csrf_token %}
       <input id='participant-count' name='participant-count' type='hidden' value='0'>
