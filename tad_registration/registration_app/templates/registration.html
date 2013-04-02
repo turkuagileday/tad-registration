@@ -33,7 +33,7 @@
       
         {{ reg_form.as_p }}
       
-        <section class='billing_types'>
+        <div class='billing_types'>
           <div class='normal_type' style='display: none'>
             {{ normal_billing_form.as_p }}
           </div>
@@ -50,10 +50,10 @@
       <fieldset>
         <legend>Participants</legend>
         
-        <section class='participants'>
+        <div class='participants'>
         
           {% for part_form in part_forms %}
-          <article class='participant'>
+          <div class='participant'>
             {{ part_form.as_p }}
           </article>
           {% endfor %}
