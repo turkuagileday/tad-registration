@@ -6,8 +6,8 @@ class RegistrationAdmin(admin.ModelAdmin):
   list_filter = ('billing_type',)
 
 class ParticipantAdmin(admin.ModelAdmin):
-  list_display = ('name', 'participation_choice',)
-  list_filter = ('participation_choice',)
+  list_display = ('name', 'participation_choice', 'conference_dinner',)
+  list_filter = ('participation_choice', 'conference_dinner',)
 
 admin.site.register(Participant, ParticipantAdmin)
 admin.site.register(Registration, RegistrationAdmin)
