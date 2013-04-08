@@ -22,7 +22,7 @@ class Registration(models.Model):
         return cost
 
     contact_person = models.CharField(max_length=255)
-    organisation = models.CharField(max_length=255)
+    organisation = models.CharField(max_length=255, blank=True, null=True)
     email_address = models.EmailField()
     billing_type = models.CharField(max_length=255, choices=BILLING_TYPE_CHOICES, help_text="A processing fee of 5 EUR is applied for all billing types other than Email.")
     invoice_customer_id = models.IntegerField(blank=True, null=True)
