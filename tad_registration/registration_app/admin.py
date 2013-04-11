@@ -15,7 +15,7 @@ class RegistrationAdmin(admin.ModelAdmin):
   inlines = [
     ParticipantInline,
   ]
-  list_display = ('organisation', 'contact_person', 'billing_type',)
+  list_display = ('organisation', 'contact_person', 'billing_type', 'date',)
   list_filter = ('billing_type',)
 
 admin.site.register(Participant, ParticipantAdmin)
