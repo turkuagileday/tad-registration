@@ -21,7 +21,7 @@ class RegistrationAdmin(admin.ModelAdmin):
 class CouponCodePriceInline(admin.TabularInline):
   model = CouponCodePrice
   extra = 0
-  fields = ('participation_choice', 'amount',)
+  fields = ('participation_choice', 'price', 'amount',)
 
 class CouponCodeAdmin(admin.ModelAdmin):
   inlines = [
