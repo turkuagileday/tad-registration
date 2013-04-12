@@ -1,6 +1,22 @@
 # -*- coding: UTF-8 -*-
 from django.db import models
 
+PARTICIPATION_CHOICES = (
+    ('both_days', 'Both days – 200 €'),
+    ('both_days_member', 'Both days (member) – 180 €'),
+    ('conference_day', 'Conference day – 140 €'),
+    ('conference_day_member', 'Conference day (member) – 130 €'),
+    ('student', 'Student – 10 €')
+)
+class CouponCode(models.Model):
+    code = models.CharField(max_length=255)
+
+class CouponCodePrice(models.Model):
+    couponcode = models.ForeignKey(CouponCode)
+    participation_choice = models.CharField(max_length=255, choices=PARTICIPATION_CHOICES)
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    amount = models.IntegerField(blank=True, null=True)
+
 class Registration(models.Model):
     """
     Represent single registration.
@@ -29,18 +45,12 @@ class Registration(models.Model):
     invoice_customer_id = models.IntegerField(blank=True, null=True)
     invoice_invoice_id = models.IntegerField(blank=True, null=True)
     date = models.DateField(auto_now_add=True)
+    couponcode = models.ForeignKey(CouponCode, blank=True, null=True)
 
     def __unicode__(self):
         return self.organisation + ' (' + self.contact_person + ')'
 
 class Participant(models.Model):
-    PARTICIPATION_CHOICES = (
-        ('both_days', 'Both days – 200 €'),
-        ('both_days_member', 'Both days (member) – 180 €'),
-        ('conference_day', 'Conference day – 140 €'),
-        ('conference_day_member', 'Conference day (member) – 130 €'),
-        ('student', 'Student – 10 €')
-    )
 
     T_SHIRT_SIZE = (
         ('no_shirt', 'No T-shirt'),
@@ -62,7 +72,7 @@ class Participant(models.Model):
         return payments[self.participation_choice]
 
     name = models.CharField(max_length=255)
-    participation_choice = models.CharField(max_length=255, choices=PARTICIPATION_CHOICES, help_text="Member choices are for Asteriski ry and Digit ry members only!")
+    participation_choice = models.CharField(max_length=255, choices=PARTICIPATION_CHOICES, help_text="Member choices are for Asteriski ry and Digit ry members only! Also note that the student price does not include lunch or dinner!")
     conference_dinner = models.BooleanField(default=True, help_text="Not selecting this does not affect the price, it only allows us to reduce waste by not ordering too much food. You can change this until May 1st by notifying us at registration@turkuagileday.fi.")
     special_diet = models.CharField(max_length=255, blank=True)
     t_shirt_size = models.CharField(verbose_name="T-shirt size", max_length=255, choices=T_SHIRT_SIZE, help_text="Getting the T-shirts depends on finding a T-shirt sponsor. Interested? Ask more about sponsoring us from <a href=\"mailto:info@turkuagileday.fi\">info@turkuagileday.fi</a>!")
@@ -99,3 +109,4 @@ class PostBillingType(BillingType):
 class EBillingType(BillingType):
     billing_address = models.CharField(max_length=255)
     operator = models.CharField(max_length=255)
+
