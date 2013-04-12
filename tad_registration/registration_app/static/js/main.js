@@ -58,6 +58,11 @@ $(function() {
               return false;
             }
           });
+        },
+        removeParticipant = function(ev) {
+          ev.preventDefault();
+          $(ev.target).parent().remove()
+          updateParticipantCount();
         };
 
     $("#id_billing_type").change(showSelectedBillingType);
@@ -66,6 +71,7 @@ $(function() {
         addParticipant();
         updateParticipantCount();
     });
+    $(document).on('click', '.remove-participant', removeParticipant);
 
     $("#registration-form").submit(function(e) {
         appendIndexesToNames();

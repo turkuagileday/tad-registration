@@ -409,6 +409,9 @@ button, input[type=submit], .button {
     background: #001e27;
     top: 1px; }
 
+.pull-right {
+  float: right; }
+
 /* Layout */
 #wrap {
   width: 760px;
