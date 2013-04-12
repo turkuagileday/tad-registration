@@ -1,5 +1,5 @@
 from django.contrib import admin
-from registration_app.models import Participant, Registration
+from registration_app.models import Participant, Registration, CouponCodePrice, CouponCode
 
 class ParticipantAdmin(admin.ModelAdmin):
   list_display = ('name', 'participation_choice', 'conference_dinner',)
@@ -18,5 +18,17 @@ class RegistrationAdmin(admin.ModelAdmin):
   list_display = ('organisation', 'contact_person', 'billing_type', 'date',)
   list_filter = ('billing_type',)
 
+class CouponCodePriceInline(admin.TabularInline):
+  model = CouponCodePrice
+  extra = 0
+  fields = ('participation_choice', 'amount',)
+
+class CouponCodeAdmin(admin.ModelAdmin):
+  inlines = [
+    CouponCodePriceInline,
+  ]
+  list_display = ('code',)
+
 admin.site.register(Participant, ParticipantAdmin)
 admin.site.register(Registration, RegistrationAdmin)
+admin.site.register(CouponCode, CouponCodeAdmin)
