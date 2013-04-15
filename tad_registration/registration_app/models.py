@@ -80,6 +80,7 @@ class Participant(models.Model):
     email_address = models.EmailField()
 # TODO: WORKSHOPS!
     other_info = models.TextField(blank=True)
+    active = models.BooleanField(default=True)
 
     registration = models.ForeignKey(Registration)
 
