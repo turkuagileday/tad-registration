@@ -7,7 +7,7 @@ class RegistrationForm(ModelForm):
     required_css_class = 'required'
     class Meta:
         model = Registration
-        exclude = ('invoice_customer_id, invoice_invoice_id')
+        exclude = ('invoice_customer_id, invoice_invoice_id, couponcode')
 
 
 @parsleyfy
@@ -15,7 +15,7 @@ class ParticipantForm(ModelForm):
     required_css_class = 'required'
     class Meta:
         model = Participant
-        exclude = ('registration')
+        exclude = ('registration, active')
 
 @parsleyfy
 class NormalBillingForm(ModelForm):
