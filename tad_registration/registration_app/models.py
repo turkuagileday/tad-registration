@@ -74,6 +74,7 @@ class Participant(models.Model):
     name = models.CharField(max_length=255)
     participation_choice = models.CharField(max_length=255, choices=PARTICIPATION_CHOICES, help_text="Member choices are for Asteriski ry and Digit ry members only! Also note that the student price does not include lunch or dinner!")
     conference_dinner = models.BooleanField(default=True, help_text="Not selecting this does not affect the price, it only allows us to reduce waste by not ordering too much food. You can change this until May 1st by notifying us at registration@turkuagileday.fi.")
+    ride_from_helsinki = models.BooleanField(default=True, help_text="There'll be a free ride from Helsinki to Turku for the conference guests if there are people who need it.")
     special_diet = models.CharField(max_length=255, blank=True)
     t_shirt_size = models.CharField(verbose_name="T-shirt size", max_length=255, choices=T_SHIRT_SIZE, help_text="Getting the T-shirts depends on finding a T-shirt sponsor. Interested? Ask more about sponsoring us from <a href=\"mailto:info@turkuagileday.fi\">info@turkuagileday.fi</a>!")
     twitter_account = models.CharField(max_length=255, blank=True)
