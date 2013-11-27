@@ -165,8 +165,8 @@ class Communicator():
         Sends email about registration to user. Expects that billing_type is email and email is set
         """
         to = self._registration.billingtype_set.get().normalbillingtype.email_address
-        subject = 'Your registration for Turku Agile Day 2013'
-        message = 'Thank you for your registration to Turku Agile Day 2013! Your registration has been successfully recorded.\n\nAttached is an invoice for the participation fee. If you need the invoice as either e-invoice or via traditional post, please inform us at invoicing@turkuagileday.fi. A handling fee of 5 EUR is applied for e-invoices and paper invoices sent via post.\n\nIf you have any questions about the event or your registration, please don\'t hesitate to contact us at info@turkuagileday.fi!\n\nYours,\n-- \nTurku Agile Day team\ninfo@turkuagileday.fi'
+        subject = 'Your registration for Turku Agile Day 2014'
+        message = 'Thank you for your registration to Turku Agile Day 2014! Your registration has been successfully recorded.\n\nAttached is an invoice for the participation fee. If you need the invoice as either e-invoice or via traditional post, please inform us at invoicing@turkuagileday.fi. A handling fee of 5 EUR is applied for e-invoices and paper invoices sent via post.\n\nIf you have any questions about the event or your registration, please don\'t hesitate to contact us at info@turkuagileday.fi!\n\nYours,\n-- \nTurku Agile Day team\ninfo@turkuagileday.fi'
 
         invoice = self._download_invoice()
         email = EmailMessage(subject, message, 'registration@turkuagileday.fi', (to, ))
@@ -179,8 +179,8 @@ class Communicator():
         """
 
         to = self._registration.email_address
-        subject = 'Your registration for Turku Agile Day 2013'
-        message = 'Thank you for your registration to Turku Agile Day 2013! Your registration has been successfully recorded.\n\nThe invoice for your registration will be sent to you separately via the method of your choice.\n\nIf you have any questions about the event or your registration, please don\'t hesitate to contact us at info@turkuagileday.fi!\n\nYours,\n-- \nTurku Agile Day team\ninfo@turkuagileday.fi'
+        subject = 'Your registration for Turku Agile Day 2014'
+        message = 'Thank you for your registration to Turku Agile Day 2014! Your registration has been successfully recorded.\n\nThe invoice for your registration will be sent to you separately via the method of your choice.\n\nIf you have any questions about the event or your registration, please don\'t hesitate to contact us at info@turkuagileday.fi!\n\nYours,\n-- \nTurku Agile Day team\ninfo@turkuagileday.fi'
         email = EmailMessage(subject, message, 'registration@turkuagileday.fi', (to, ))
         email.send()
 
