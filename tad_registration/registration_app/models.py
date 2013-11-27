@@ -2,10 +2,10 @@
 from django.db import models
 
 PARTICIPATION_CHOICES = (
-    ('both_days', 'Both days – 200 €'),
-    ('both_days_member', 'Both days (member) – 180 €'),
-    ('conference_day', 'Conference day – 140 €'),
-    ('conference_day_member', 'Conference day (member) – 130 €'),
+    ('both_days', 'Both days – 180 €'),
+    ('both_days_member', 'Both days (member) – 162 €'),
+    ('conference_day', 'Conference day – 130 €'),
+    ('conference_day_member', 'Conference day (member) – 117 €'),
     ('student', 'Student – 10 €')
 )
 class CouponCode(models.Model):
@@ -63,10 +63,10 @@ class Participant(models.Model):
 
     def get_participation_cost(self):
         payments = {
-          'both_days': 200,
-          'both_days_member': 180,
-          'conference_day': 140,
-          'conference_day_member': 130,
+          'both_days': 180,
+          'both_days_member': 162,
+          'conference_day': 130,
+          'conference_day_member': 117,
           'student': 10
         }
         return payments[self.participation_choice]
