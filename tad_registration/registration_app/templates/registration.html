@@ -16,7 +16,6 @@
   <div id="wrap">
     <h1><a href="http://www.turkuagileday.fi/"><img src="/static/img/tad014.png" alt="Turku Agile Day 2014"></a></h1>
     <h2>Registration</h2>
-    <section>
     <legend>Options</legend>
     <ul class="prices">
       <li>Both days – 180 €</li>
@@ -44,7 +43,6 @@
           <div class='e_type' style='display: none'>
             {{ e_billing_form.as_p }}
           </div>
-        </section>
       
       </fieldset>
       
@@ -56,12 +54,8 @@
           {% for part_form in part_forms %}
           <div class='participant'>
             {{ part_form.as_p }}
-          </article>
           <button class="remove-participant pull-right">Remove this participant</button>
           {% endfor %}
-          
-        </section>
-        
         <button class='add-participant'>+ Add another participant</button>
       </fieldset>
       

@@ -18,8 +18,10 @@ $(function() {
                 $el = $(el);
                 index = $el.attr('data-index');
                 if($el.attr("type") !== 'hidden' && index !== undefined) {
-                    name = $el.attr('name');
+                    var name = $el.attr('name'),
+                        id = $el.attr('id');
                     $el.attr('name', name + "-" + index);
+                    $el.attr('id', id + "-" + index);
                 }
             });
         },
