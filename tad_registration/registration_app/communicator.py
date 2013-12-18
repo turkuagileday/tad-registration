@@ -98,7 +98,7 @@ class Communicator():
             ret = {
                 'product_number': 1004,
                 'name': 'Conference day (student)',
-                'unit_price': 8.06,
+                'unit_price': 8.0645,
                 'vat_percent': 24,
                 'amount': len(participants)
             }

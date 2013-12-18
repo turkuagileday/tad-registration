@@ -67,7 +67,7 @@ class Participant(models.Model):
           'both_days_member': 180,
           'conference_day': 125,
           'conference_day_member': 125,
-          'student': 8.06
+          'student': 8.0645
         }
         return payments[self.participation_choice]
 
