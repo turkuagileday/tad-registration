@@ -69,7 +69,7 @@ class Communicator():
             ret = {
                 'product_number': 1001,
                 'name': 'Both days (member)',
-                'unit_price': 162,
+                'unit_price': 180,
                 'vat_percent': 24,
                 'amount': len(participants)
             }
@@ -79,7 +79,7 @@ class Communicator():
             ret = {
                 'product_number': 1002,
                 'name': 'Conference day',
-                'unit_price': 130,
+                'unit_price': 125,
                 'vat_percent': 24,
                 'amount': len(participants)
             }
@@ -88,7 +88,7 @@ class Communicator():
             ret = {
                 'product_number': 1003,
                 'name': 'Conference day (member)',
-                'unit_price': 117,
+                'unit_price': 125,
                 'vat_percent': 24,
                 'amount': len(participants)
             }
@@ -98,7 +98,7 @@ class Communicator():
             ret = {
                 'product_number': 1004,
                 'name': 'Conference day (student)',
-                'unit_price': 10,
+                'unit_price': 8.06,
                 'vat_percent': 24,
                 'amount': len(participants)
             }
