@@ -2,9 +2,9 @@
 from django.db import models
 
 PARTICIPATION_CHOICES = (
-    ('both_days', 'Both days – 180 €'),
+    ('both_days', 'Both days – 220 €'),
     ('both_days_member', 'Both days (member) – 180 €'),
-    ('conference_day', 'Conference day – 125 €'),
+    ('conference_day', 'Conference day – 160 €'),
     ('conference_day_member', 'Conference day (member) – 125 €'),
     ('student', 'Student – 10 €')
 )
@@ -63,9 +63,9 @@ class Participant(models.Model):
 
     def get_participation_cost(self):
         payments = {
-          'both_days': 180,
+          'both_days': 220,
           'both_days_member': 180,
-          'conference_day': 125,
+          'conference_day': 160,
           'conference_day_member': 125,
           'student': 8.0645
         }
