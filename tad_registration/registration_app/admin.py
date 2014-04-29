@@ -2,7 +2,7 @@ from django.contrib import admin
 from registration_app.models import Participant, Registration, CouponCodePrice, CouponCode
 
 class ParticipantAdmin(admin.ModelAdmin):
-  list_display = ('name', 'participation_choice', 'conference_dinner', 'ride_from_helsinki', 'active',)
+  list_display = ('name', 'participation_choice', 'conference_dinner', 'ride_from_helsinki', 'ride_from_tampere', 'active',)
   list_filter = ('participation_choice', 'conference_dinner', 'active',)
 
 class ParticipantInline(admin.TabularInline):
