@@ -37,6 +37,7 @@ def register(request):
 
         model.conference_dinner = model.conference_dinner == "on"
         model.ride_from_helsinki = model.ride_from_helsinki == "on"
+        model.ride_from_tampere = model.ride_from_tampere == "on"
 
         return model
 
