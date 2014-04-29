@@ -166,12 +166,11 @@ class Communicator():
         """
         to = self._registration.billingtype_set.get().normalbillingtype.email_address
         subject = 'Your registration for Turku Agile Day 2014'
-        #message = 'Thank you for your registration to Turku Agile Day 2014! Your registration has been successfully recorded.\n\nAttached is an invoice for the participation fee. If you need the invoice as either e-invoice or via traditional post, please inform us at invoicing@turkuagileday.fi. A handling fee of 5 EUR is applied for e-invoices and paper invoices sent via post.\n\nIf you have any questions about the event or your registration, please don\'t hesitate to contact us at info@turkuagileday.fi!\n\nYours,\n-- \nTurku Agile Day team\ninfo@turkuagileday.fi'
-        message = 'Hello and thanks for registering to Turku Agile Day 2014!\n\nDue to differences with Finnish tax officials about our VAT status we cannot bill you at this moment. We will send you the invoice as soon as we are clear what is happening with our VAT status.\n\nIf you have any questions about the registration, please do not hesitate to contact us!\n\nBest regards,\nTurku Agile Day team'
+        message = 'Thank you for your registration to Turku Agile Day 2014! Your registration has been successfully recorded.\n\nAttached is an invoice for the participation fee. If you need the invoice as either e-invoice or via traditional post, please inform us at invoicing@turkuagileday.fi. A handling fee of 5 EUR is applied for e-invoices and paper invoices sent via post.\n\nIf you have any questions about the event or your registration, please don\'t hesitate to contact us at info@turkuagileday.fi!\n\nYours,\n-- \nTurku Agile Day team\ninfo@turkuagileday.fi'
 
         invoice = self._download_invoice()
         email = EmailMessage(subject, message, 'registration@turkuagileday.fi', (to, ))
-        #email.attach('tad_invoice.pdf', invoice, 'application/pdf')
+        email.attach('tad_invoice.pdf', invoice, 'application/pdf')
         email.send()
 
     def send_notification_email(self):
