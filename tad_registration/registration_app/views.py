@@ -17,11 +17,11 @@ def export_badges(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
     writer = unicodecsv.writer(response, encoding='utf-8')
-    writer.writerow(['Name', 'Company', 'Twitter'])
+    writer.writerow(['Name', 'Company', 'Twitter', 'Participation type'])
 
     parts = Participant.objects.all()
     for p in parts:
-       writer.writerow([p.name, p.registration.organisation, p.twitter_account])
+       writer.writerow([p.name, p.registration.organisation, p.twitter_account, p.participation_choice])
 
     return response
 
