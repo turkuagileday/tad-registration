@@ -19,5 +19,6 @@ urlpatterns = patterns('',
     url(r'^$', 'registration_app.views.registration', name="registration"),
     url(r'^register$', 'registration_app.views.register', name="register"),
     url(r'^export/workshops$', 'registration_app.views.export_workshops', name="export_workshops"),
+    url(r'^export/badges$', 'registration_app.views.export_badges', name="export_badges"),
     url(r'^export/diets$', 'registration_app.views.export_diets', name="export_diets")
 )

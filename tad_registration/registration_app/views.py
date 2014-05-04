@@ -13,6 +13,19 @@ from django.contrib.auth.decorators import permission_required
 import unicodecsv
 
 @permission_required('registration_app.change_participant')
+def export_badges(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+    writer = unicodecsv.writer(response, encoding='utf-8')
+    writer.writerow(['Name', 'Company', 'Twitter'])
+
+    parts = Participant.objects.all()
+    for p in parts:
+       writer.writerow([p.name, p.registration.organisation, p.twitter_account])
+
+    return response
+
+@permission_required('registration_app.change_participant')
 def export_diets(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
