@@ -3,3 +3,4 @@ flup
 mysql-python
 requests
 south
+unicodecsv

@@ -8,6 +8,35 @@ from forms import RegistrationForm, ParticipantForm, NormalBillingForm, PostBill
 from models import Participant, NormalBillingType, PostBillingType, EBillingType
 
 from communicator import Communicator
+from django.contrib.auth.decorators import permission_required
+
+import unicodecsv
+
+@permission_required('registration_app.change_participant')
+def export_diets(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+    writer = unicodecsv.writer(response, encoding='utf-8')
+    writer.writerow(['Participation choice', 'Conference dinner (y/n)', 'Special diet'])
+
+    parts = Participant.objects.all()
+    for p in parts:
+       writer.writerow([p.participation_choice, p.conference_dinner, p.special_diet])
+
+    return response
+
+@permission_required('registration_app.change_participant')
+def export_workshops(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+    writer = unicodecsv.writer(response, encoding='utf-8')
+    writer.writerow(['Name', 'Email address', 'Registration date'])
+
+    parts = Participant.objects.filter(participation_choice__in=['both_days', 'both_days_member'])
+    for p in parts:
+       writer.writerow([p.name, p.email_address, p.registration.date])
+
+    return response
 
 def registration(request):
     registration_form = RegistrationForm()
