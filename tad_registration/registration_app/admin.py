@@ -1,5 +1,7 @@
 from django.contrib import admin
 from registration_app.models import Participant, Registration, CouponCodePrice, CouponCode
+from communicator import Communicator
+import logging
 
 class ParticipantAdmin(admin.ModelAdmin):
   list_display = ('name', 'participation_choice', 'conference_dinner', 'ride_from_helsinki', 'ride_from_tampere', 'active',)
@@ -17,6 +19,17 @@ class RegistrationAdmin(admin.ModelAdmin):
   ]
   list_display = ('organisation', 'contact_person', 'billing_type', 'date',)
   list_filter = ('billing_type',)
+  actions = ['send_invoice']
+
+  def send_invoice(modeladmin, request, queryset):
+    for registration in queryset:
+      communicator = Communicator(registration)
+      try:
+        if registration.billing_type == 'email':
+          communicator.send_invoice_email()
+      except RuntimeError:
+        logging.error("Invalid statuscode. Is cloudvoice working. Email wasn't sent")
+  send_invoice.short_description = 'Send invoice'
 
 class CouponCodePriceInline(admin.TabularInline):
   model = CouponCodePrice
